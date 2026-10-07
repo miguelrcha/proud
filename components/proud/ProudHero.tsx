@@ -26,14 +26,14 @@ export default function ProudHero() {
         >
           <DownloadMacLabel />
         </a>
-        <a
+        {/* <a
           href="#purchase"
           className="flex items-center gap-3 rounded-[14px] bg-[#e8e8ed] px-6 py-[13px] text-[18px] font-semibold text-[#1c1c1e] transition-colors hover:bg-[#dddde3]"
         >
           <BadgeCheckIcon className="h-[22px] w-[22px] text-[#b3b3be]" />
           Purchase
           <span className="ml-1 rounded-md bg-[#1c1c1e] px-2 py-1 text-[14px] font-bold text-white">Free</span>
-        </a>
+        </a> */}
       </div>
 
       <ProudShowcase />
