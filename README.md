@@ -2,6 +2,16 @@
 
 Landing page em Next.js 14 (App Router) + TypeScript + Tailwind CSS, inspirada na estrutura da página da Alcove (tryalcove.com), com fundo cinza, texto preto e a marca "Feyce".
 
+## Screenshots
+
+### Dashboard
+
+![Dashboard](docs/screenshots/proud-dashboard.png)
+
+### Tarefas
+
+![Tarefas](docs/screenshots/proud-tarefas.png)
+
 ## Rodar localmente
 
 ```bash
