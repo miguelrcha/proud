@@ -4,6 +4,7 @@ import ProudHeader from "@/components/proud/ProudHeader";
 import ProudFooter from "@/components/proud/ProudFooter";
 import { ChangelogIcon } from "@/components/proud/icons";
 import { changelog, changelogUpdated } from "@/components/proud/changelog";
+import { withBrand } from "@/components/proud/Brand";
 
 export const metadata: Metadata = {
   title: "Proud — Changelog",
@@ -66,7 +67,7 @@ export default function ChangelogPage() {
         {changelog.map((major, i) => (
           <div key={major.version} data-reveal={i === 0 ? "240" : "0"} className="mt-14 md:mt-16">
             <h2 className="text-[34px] font-bold tracking-[-0.03em] text-[#1c1c1e]">{major.version}</h2>
-            <p className="mt-5 max-w-[720px] text-[18px] leading-[1.6] text-[#1c1c1e]">{major.summary}</p>
+            <p className="mt-5 max-w-[720px] text-[18px] leading-[1.6] text-[#1c1c1e]">{withBrand(major.summary)}</p>
 
             <ul className="mt-8">
               {major.releases.map((release) => (

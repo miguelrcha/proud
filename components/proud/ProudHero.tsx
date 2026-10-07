@@ -1,6 +1,7 @@
 import { AppleLogo, BadgeCheckIcon } from "./icons";
 import ProudShowcase from "./ProudShowcase";
 import DownloadMacLabel from "./DownloadMacLabel";
+import ReleaseCountdown from "./ReleaseCountdown";
 
 export default function ProudHero() {
   return (
@@ -26,6 +27,7 @@ export default function ProudHero() {
         >
           <DownloadMacLabel />
         </a>
+        <ReleaseCountdown />
         {/* <a
           href="#purchase"
           className="flex items-center gap-3 rounded-[14px] bg-[#e8e8ed] px-6 py-[13px] text-[18px] font-semibold text-[#1c1c1e] transition-colors hover:bg-[#dddde3]"

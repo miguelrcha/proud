@@ -120,7 +120,7 @@ function MenuBar({ now, visible, app }: { now: Date | null; visible: boolean; ap
     >
       <div className="flex items-center gap-3 sm:gap-5">
         <AppleLogo className="h-3 w-3 sm:h-[15px] sm:w-[15px]" />
-        <span className="font-bold">{app}</span>
+        <span translate="no" className="notranslate font-bold">{app}</span>
         <span className="hidden md:inline">File</span>
         <span className="hidden md:inline">Edit</span>
         <span className="hidden md:inline">View</span>
@@ -225,7 +225,7 @@ function DockItem({
       onClick={onClick}
       className={`group/dock relative flex flex-col items-center ${onClick ? "cursor-pointer" : ""}`}
     >
-      <span className="pointer-events-none absolute -top-9 whitespace-nowrap rounded-md bg-black/50 px-2 py-0.5 text-[11px] font-medium text-white opacity-0 backdrop-blur-md transition-opacity group-hover/dock:opacity-100">
+      <span translate="no" className="notranslate pointer-events-none absolute -top-9 whitespace-nowrap rounded-md bg-black/50 px-2 py-0.5 text-[11px] font-medium text-white opacity-0 backdrop-blur-md transition-opacity group-hover/dock:opacity-100">
         {name}
       </span>
       <div className="h-[clamp(28px,4vw,52px)] w-[clamp(28px,4vw,52px)] origin-bottom transition-transform duration-200 ease-out group-hover/dock:-translate-y-1.5 group-hover/dock:scale-[1.25]">

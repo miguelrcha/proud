@@ -28,7 +28,8 @@ export default function ProudHeader() {
             </svg>
           </span>
           <span
-            className="text-[22px] font-semibold tracking-[-0.02em] text-[#1c1c1e]"
+            translate="no"
+            className="notranslate text-[22px] font-semibold tracking-[-0.02em] text-[#1c1c1e]"
             style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", Inter, sans-serif' }}
           >
             Proud
@@ -39,7 +40,9 @@ export default function ProudHeader() {
         </a>
         <span className="hidden -translate-y-1 items-center gap-2 text-[13px] font-medium text-[#83838f] md:flex">
           Powered by
-          <img src="/rchlabs.png" alt="rchlabs" width={83} height={26} className="h-[26px] w-auto" />
+          <a href="https://rchlabs.vercel.app" target="_blank" rel="noopener noreferrer">
+            <img src="/rchlabs.png" alt="rchlabs" width={83} height={26} className="h-[26px] w-auto" />
+          </a>
         </span>
       </div>
 
