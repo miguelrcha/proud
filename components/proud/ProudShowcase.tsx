@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { AppleLogo, IdBadgeIcon, SunIcon } from "./icons";
 import DynamicIsland from "./DynamicIsland";
+import ProudApp from "./ProudApp";
 
 function useNow() {
   const [now, setNow] = useState<Date | null>(null);
@@ -144,21 +145,23 @@ function MenuBar({ now, visible, app }: { now: Date | null; visible: boolean; ap
 }
 
 function AppWindow({ open, onClose }: { open: boolean; onClose: () => void }) {
+  // While closed, the app's controls shouldn't be focusable.
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (ref.current) ref.current.inert = !open;
+  }, [open]);
+
   return (
     <div
       onClick={(e) => e.stopPropagation()}
+      // Keep typing inside the app from reaching the screen's Enter/Space unlock handler.
+      onKeyDown={(e) => e.stopPropagation()}
+      ref={ref}
       className={`absolute left-1/2 top-[9%] w-[84%] origin-bottom -translate-x-1/2 cursor-default overflow-hidden rounded-[8px] border border-white/15 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] sm:rounded-[12px] ${ease} ${
         open ? "translate-y-0 scale-100 opacity-100" : "pointer-events-none translate-y-[45%] scale-[0.15] opacity-0 blur-sm"
       }`}
     >
-      <img src="/proud-app.jpg" alt="Proud dashboard" draggable={false} className="block aspect-[2912/1648] w-full" />
-      {/* Close button over the red traffic light */}
-      <button
-        type="button"
-        aria-label="Close Proud"
-        onClick={onClose}
-        className="absolute left-[0.5%] top-[1%] h-[3.5%] w-[1.6%] cursor-pointer rounded-full"
-      />
+      <ProudApp open={open} onClose={onClose} />
     </div>
   );
 }
