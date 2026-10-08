@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode, type RefObject } from "react";
 import { AppleLogo, IdBadgeIcon, SunIcon } from "./icons";
 import DynamicIsland from "./DynamicIsland";
 import ProudApp from "./ProudApp";
@@ -24,6 +24,8 @@ export default function ProudShowcase() {
   const [unlocked, setUnlocked] = useState(false);
   const [appOpen, setAppOpen] = useState(false);
   const [islandOpen, setIslandOpen] = useState(false);
+  const screenRef = useRef<HTMLDivElement>(null);
+  const proudIconRef = useRef<HTMLDivElement>(null);
 
   const date = now
     ? now.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }).replace(" ", ", ")
@@ -52,6 +54,7 @@ export default function ProudShowcase() {
             toggle();
           }
         }}
+        ref={screenRef}
         className="relative aspect-[4/5] w-full cursor-pointer select-none sm:aspect-[16/10]"
       >
         <img
@@ -99,9 +102,15 @@ export default function ProudShowcase() {
           Click to unlock
         </p>
 
-        <AppWindow open={appOpen} onClose={() => setAppOpen(false)} />
+        <AppWindow open={appOpen} onClose={() => setAppOpen(false)} screenRef={screenRef} iconRef={proudIconRef} />
 
-        <Dock now={now} visible={unlocked} proudOpen={appOpen} onProudClick={() => setAppOpen((o) => !o)} />
+        <Dock
+          now={now}
+          visible={unlocked}
+          proudOpen={appOpen}
+          proudIconRef={proudIconRef}
+          onProudClick={() => setAppOpen((o) => !o)}
+        />
       </div>
     </div>
   );
@@ -144,12 +153,130 @@ function MenuBar({ now, visible, app }: { now: Date | null; visible: boolean; ap
   );
 }
 
-function AppWindow({ open, onClose }: { open: boolean; onClose: () => void }) {
-  // While closed, the app's controls shouldn't be focusable.
+function AppWindow({
+  open,
+  onClose,
+  screenRef,
+  iconRef,
+}: {
+  open: boolean;
+  onClose: () => void;
+  screenRef: RefObject<HTMLDivElement>;
+  iconRef: RefObject<HTMLDivElement>;
+}) {
   const ref = useRef<HTMLDivElement>(null);
+  const [animating, setAnimating] = useState(false);
+  const genie = useRef<{ frame: number; overlay: HTMLDivElement | null; p: number }>({ frame: 0, overlay: null, p: 1 });
+  const first = useRef(true);
+
+  // While closed, the app's controls shouldn't be focusable.
   useEffect(() => {
     if (ref.current) ref.current.inert = !open;
   }, [open]);
+
+  // macOS "genie" minimize: p = 0 is the open window, p = 1 is fully sucked into the dock icon.
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    const win = ref.current;
+    const screen = screenRef.current;
+    const icon = iconRef.current;
+    const g = genie.current;
+    cancelAnimationFrame(g.frame);
+    g.overlay?.remove();
+    g.overlay = null;
+    if (!win || !screen || !icon || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      g.p = open ? 0 : 1;
+      setAnimating(false);
+      return;
+    }
+
+    const s = screen.getBoundingClientRect();
+    const w = win.getBoundingClientRect();
+    const i = icon.getBoundingClientRect();
+    const L = w.left - s.left;
+    const T = w.top - s.top;
+    const W = w.width;
+    const H = w.height;
+    const ix = i.left - s.left + i.width / 2;
+    const iy = i.top - s.top + i.height * 0.35;
+    const iw = i.width * 0.7;
+
+    // Slice a snapshot of the window into horizontal strips; each strip is squeezed independently.
+    const N = 28;
+    const sh = H / N;
+    const overlay = document.createElement("div");
+    overlay.setAttribute("aria-hidden", "true");
+    overlay.style.cssText = "position:absolute;inset:0;pointer-events:none;z-index:5";
+    const snapshot = win.cloneNode(true) as HTMLDivElement;
+    snapshot.removeAttribute("inert");
+    snapshot.style.cssText = `position:absolute;left:0;width:${W}px;height:${H}px;margin:0;transform:none;transition:none;opacity:1;filter:none;visibility:visible;box-shadow:none`;
+    const strips: HTMLDivElement[] = [];
+    for (let k = 0; k < N; k++) {
+      const strip = document.createElement("div");
+      strip.style.cssText = `position:absolute;left:0;top:0;width:${W}px;height:${sh + 1}px;overflow:hidden;transform-origin:0 0;will-change:transform`;
+      const c = snapshot.cloneNode(true) as HTMLDivElement;
+      c.style.top = `${-k * sh}px`;
+      strip.appendChild(c);
+      overlay.appendChild(strip);
+      strips.push(strip);
+    }
+    screen.appendChild(overlay);
+    g.overlay = overlay;
+
+    const smooth = (x: number) => {
+      const t = Math.min(1, Math.max(0, x));
+      return t * t * (3 - 2 * t);
+    };
+    // Funnel: how far a row at screen-y is pulled toward the icon's width (0 = full window, 1 = icon).
+    const funnel = (y: number) => smooth((y - T) / (iy - T));
+    const render = (p: number) => {
+      const a = Math.min(1, p / 0.4); // phase 1: sides bend toward the icon
+      const b = smooth((p - 0.4) / 0.6); // phase 2: window pours down into it
+      const drop = b * (iy - T);
+      for (let k = 0; k < N; k++) {
+        const y0 = Math.min(T + k * sh + drop, iy);
+        const y1 = Math.min(T + (k + 1) * sh + drop, iy);
+        const f = a * funnel((y0 + y1) / 2);
+        const left = L + (ix - iw / 2 - L) * f;
+        const right = L + W + (ix + iw / 2 - L - W) * f;
+        const st = strips[k].style;
+        st.transform = `translate(${left}px, ${y0}px) scale(${(right - left) / W}, ${Math.max(0, y1 - y0) / sh})`;
+        st.opacity = y1 - y0 < 0.5 ? "0" : "1";
+      }
+    };
+
+    const from = g.p;
+    const to = open ? 0 : 1;
+    const duration = 620 * Math.abs(to - from);
+    const ease = (t: number) => (t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2);
+    const start = performance.now();
+    setAnimating(true);
+    render(from);
+    const tick = (now: number) => {
+      const t = duration ? Math.min(1, (now - start) / duration) : 1;
+      g.p = from + (to - from) * ease(t);
+      render(g.p);
+      if (t < 1) {
+        g.frame = requestAnimationFrame(tick);
+      } else {
+        overlay.remove();
+        g.overlay = null;
+        setAnimating(false);
+      }
+    };
+    g.frame = requestAnimationFrame(tick);
+  }, [open, screenRef, iconRef]);
+
+  useEffect(() => {
+    const g = genie.current;
+    return () => {
+      cancelAnimationFrame(g.frame);
+      g.overlay?.remove();
+    };
+  }, []);
 
   return (
     <div
@@ -157,8 +284,9 @@ function AppWindow({ open, onClose }: { open: boolean; onClose: () => void }) {
       // Keep typing inside the app from reaching the screen's Enter/Space unlock handler.
       onKeyDown={(e) => e.stopPropagation()}
       ref={ref}
-      className={`absolute left-1/2 top-[9%] w-[84%] origin-bottom -translate-x-1/2 cursor-default overflow-hidden rounded-[8px] border border-white/15 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] sm:rounded-[12px] ${ease} ${
-        open ? "translate-y-0 scale-100 opacity-100" : "pointer-events-none translate-y-[45%] scale-[0.15] opacity-0 blur-sm"
+      style={{ visibility: open && !animating ? "visible" : "hidden" }}
+      className={`absolute left-1/2 top-[9%] w-[84%] -translate-x-1/2 cursor-default overflow-hidden rounded-[8px] border border-white/15 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.7)] sm:rounded-[12px] ${
+        open ? "" : "pointer-events-none"
       }`}
     >
       <ProudApp open={open} onClose={onClose} />
@@ -170,11 +298,13 @@ function Dock({
   now,
   visible,
   proudOpen,
+  proudIconRef,
   onProudClick,
 }: {
   now: Date | null;
   visible: boolean;
   proudOpen: boolean;
+  proudIconRef: RefObject<HTMLDivElement>;
   onProudClick: () => void;
 }) {
   const apps: { name: string; icon: ReactNode }[] = [
@@ -200,6 +330,7 @@ function Dock({
           name={app.name}
           active={app.name === "Finder" || (app.name === "Proud" && proudOpen)}
           onClick={app.name === "Proud" ? onProudClick : undefined}
+          iconRef={app.name === "Proud" ? proudIconRef : undefined}
         >
           {app.icon}
         </DockItem>
@@ -216,11 +347,13 @@ function DockItem({
   name,
   active = false,
   onClick,
+  iconRef,
   children,
 }: {
   name: string;
   active?: boolean;
   onClick?: () => void;
+  iconRef?: RefObject<HTMLDivElement>;
   children: ReactNode;
 }) {
   return (
@@ -231,7 +364,7 @@ function DockItem({
       <span translate="no" className="notranslate pointer-events-none absolute -top-9 whitespace-nowrap rounded-md bg-black/50 px-2 py-0.5 text-[11px] font-medium text-white opacity-0 backdrop-blur-md transition-opacity group-hover/dock:opacity-100">
         {name}
       </span>
-      <div className="h-[clamp(28px,4vw,52px)] w-[clamp(28px,4vw,52px)] origin-bottom transition-transform duration-200 ease-out group-hover/dock:-translate-y-1.5 group-hover/dock:scale-[1.25]">
+      <div ref={iconRef} className="h-[clamp(28px,4vw,52px)] w-[clamp(28px,4vw,52px)] origin-bottom transition-transform duration-200 ease-out group-hover/dock:-translate-y-1.5 group-hover/dock:scale-[1.25]">
         {children}
       </div>
       <span
