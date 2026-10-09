@@ -101,3 +101,27 @@ body {
   0%, 100% { transform: scaleY(0.4); }
   50% { transform: scaleY(1); }
 }
+
+/* Pixel agents waddling on the hero download button (components/proud/WalkingAgents.tsx) */
+.agent-walker {
+  animation-name: agent-walk;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+.agent-walker-body {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: agent-waddle 0.5s steps(1) infinite;
+}
+
+@keyframes agent-walk {
+  0% { left: 0; opacity: 0; }
+  6%, 94% { opacity: 1; }
+  100% { left: calc(100% - var(--w)); opacity: 0; }
+}
+
+@keyframes agent-waddle {
+  0% { transform: rotate(-5deg); }
+  50% { transform: translateY(-1px) rotate(5deg); }
+}

@@ -2,6 +2,7 @@ import { AppleLogo, BadgeCheckIcon } from "./icons";
 import ProudShowcase from "./ProudShowcase";
 import DownloadMacLabel from "./DownloadMacLabel";
 import ReleaseCountdown from "./ReleaseCountdown";
+import WalkingAgents from "./WalkingAgents";
 
 export default function ProudHero() {
   return (
@@ -23,8 +24,9 @@ export default function ProudHero() {
       <div id="download" data-reveal="260" className="mt-10 flex flex-col items-center gap-4 sm:mt-[50px] sm:flex-row sm:gap-[30px]">
         <a
           href="/download"
-          className="group flex items-center rounded-[14px] bg-[#1c1c1e] px-6 py-[17px] text-[18px] font-semibold text-white shadow-[0_14px_30px_-8px_rgba(28,28,30,0.45)] transition-transform hover:-translate-y-0.5"
+          className="group relative flex items-center rounded-[14px] bg-[#1c1c1e] px-6 py-[17px] text-[18px] font-semibold text-white shadow-[0_14px_30px_-8px_rgba(28,28,30,0.45)] transition-transform hover:-translate-y-0.5"
         >
+          <WalkingAgents />
           <DownloadMacLabel />
         </a>
         <ReleaseCountdown />
