@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-// Release: Wednesday, Oct 14 2026, 00:00 Brasília time.
-const RELEASE_AT = new Date("2026-10-14T00:00:00-03:00").getTime();
+// Release: Friday, Oct 16 2026, 00:00 Brasília time.
+const RELEASE_AT = new Date("2026-10-16T00:00:00-03:00").getTime();
 
 function remaining(now: number) {
   const total = Math.max(0, Math.ceil((RELEASE_AT - now) / 1_000));
