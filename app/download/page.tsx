@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function DownloadPage() {
   return (
     <main className="min-h-screen bg-[#f4f4f6]">
-      <ProudHeader hide="download" />
+      <ProudHeader hide="download" trial />
 
       <section className="flex flex-col items-center px-4 pt-20 md:pt-[110px]">
         <h1 data-reveal="120" className="text-center text-[44px] font-bold leading-[1.02] tracking-[-0.05em] text-[#1c1c1e] sm:text-[64px] md:text-[96px]">
