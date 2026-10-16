@@ -42,7 +42,7 @@ export default function ProudShowcase() {
   };
 
   return (
-    <div data-reveal="400" className="relative mt-14 w-full max-w-[1215px] overflow-hidden rounded-[28px] bg-[#1d2a1c] sm:mt-20 md:rounded-[44px]">
+    <div data-reveal="400" className="relative mt-10 w-full max-w-[1215px] overflow-hidden rounded-[28px] bg-[#1d2a1c] sm:mt-[clamp(32px,6vh,80px)] md:rounded-[44px]">
       <div
         role="button"
         tabIndex={0}

@@ -92,6 +92,112 @@ body {
   }
 }
 
+/* Hero title details, played once the title reveals (components/proud/ProudHero.tsx) */
+.hero-dot {
+  display: inline-block;
+  border-radius: 9999px;
+  background: currentColor;
+}
+
+.hero-dot-i {
+  position: absolute;
+  left: 50%;
+  top: 0.06em;
+  width: 0.15em;
+  height: 0.15em;
+  margin-left: -0.075em;
+}
+
+.hero-dot-period {
+  width: 0.15em;
+  height: 0.15em;
+  margin-left: 0.03em;
+}
+
+.is-revealed .hero-dot {
+  animation: hero-dot-drop 0.9s cubic-bezier(0.3, 0, 0.3, 1) both;
+}
+
+.is-revealed .hero-dot-i { animation-delay: 0.7s; }
+.is-revealed .hero-dot-period { animation-delay: 0.85s; }
+
+.hero-marker {
+  transform-origin: left center;
+}
+
+.is-revealed .hero-marker {
+  animation: hero-marker-swipe 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.95s both;
+}
+
+.hero-leaf {
+  transform-box: fill-box;
+  transform-origin: 0% 100%;
+}
+
+.is-revealed .hero-leaf {
+  animation: hero-leaf-grow 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) 1.45s both;
+}
+
+@keyframes hero-dot-drop {
+  0% { transform: translateY(-1.4em); opacity: 0; }
+  35% { transform: translateY(0) scale(1.25, 0.7); opacity: 1; }
+  55% { transform: translateY(-0.28em) scale(0.92, 1.08); }
+  75% { transform: translateY(0) scale(1.1, 0.88); }
+  88% { transform: translateY(-0.05em); }
+  100% { transform: none; opacity: 1; }
+}
+
+@keyframes hero-marker-swipe {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+@keyframes hero-leaf-grow {
+  0% { transform: rotate(-60deg) scale(0); }
+  100% { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-revealed .hero-dot,
+  .is-revealed .hero-marker,
+  .is-revealed .hero-leaf {
+    animation: none;
+  }
+}
+
+/* A header link pointing at the current page leaves on load (components/proud/ProudHeader.tsx) */
+.header-leave {
+  grid-template-columns: 0fr;
+  margin-left: calc(-1 * var(--nav-gap, 0px));
+  animation: header-leave-collapse 0.6s cubic-bezier(0.65, 0, 0.35, 1) 0.9s both;
+}
+
+.header-leave .header-leave-item {
+  pointer-events: none;
+  animation: header-leave-fade 0.45s cubic-bezier(0.4, 0, 1, 1) 0.6s both;
+}
+
+@keyframes header-leave-collapse {
+  from { grid-template-columns: 1fr; margin-left: 0; }
+  to { grid-template-columns: 0fr; margin-left: calc(-1 * var(--nav-gap, 0px)); }
+}
+
+@keyframes header-leave-fade {
+  from { opacity: 1; transform: none; filter: none; }
+  to { opacity: 0; transform: translateX(40px) scale(0.9); filter: blur(6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header-leave,
+  .header-leave .header-leave-item {
+    animation: none;
+  }
+
+  .header-leave .header-leave-item {
+    opacity: 0;
+  }
+}
+
 @keyframes changelog-write {
   from { transform: scaleX(0); }
   to { transform: scaleX(1); }

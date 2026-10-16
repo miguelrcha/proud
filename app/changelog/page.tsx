@@ -51,7 +51,7 @@ function ChangeGroup({ title, icon, items }: { title: string; icon: ReactNode; i
 export default function ChangelogPage() {
   return (
     <main className="min-h-screen bg-[#f4f4f6]">
-      <ProudHeader />
+      <ProudHeader hide="changelog" />
 
       <section className="mx-auto w-full max-w-[800px] px-5 pt-20 md:pt-[110px]">
         <div data-reveal="120">

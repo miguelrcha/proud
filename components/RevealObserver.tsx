@@ -20,7 +20,7 @@ export default function RevealObserver() {
           observer.unobserve(el);
         }
       },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.1 },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0 },
     );
     els.forEach((el) => observer.observe(el));
     return () => observer.disconnect();
