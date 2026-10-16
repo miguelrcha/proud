@@ -1,5 +1,4 @@
 // Release notes shown on /changelog. Newest first.
-// NOTE: placeholder content — replace with Proud's real release notes.
 
 export type Release = {
   version: string;
@@ -22,6 +21,16 @@ export const changelog: MajorRelease[] = [
     summary:
       "The first release of Proud: the Dynamic Island on your Mac, with built-in AI agents, Focus Sessions, Quick Capture and Smart Notifications.",
     releases: [
+      {
+        version: "1.0.1",
+        date: "16 Oct 2026",
+        features: [
+          "Added 20 working connections: Google Calendar, Gmail, Google Drive, Notion, Obsidian, Todoist, Linear, Slack, Microsoft Teams, Discord, WhatsApp, Telegram, Figma, Nubank, Vercel, Cloudflare, Supabase, GitHub, Claude and ChatGPT",
+          "Added a new macOS-style update window with the Proud icon, the version and Update / Later buttons",
+          "Added new-version alerts to the Notifications tab in the Dynamic Island, with the Proud logo — click to update",
+          "Added the version and build number to the bottom-left corner of the login screen",
+        ],
+      },
       {
         version: "1.0.0",
         date: "7 Oct 2026",
