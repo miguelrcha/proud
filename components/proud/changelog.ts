@@ -22,6 +22,19 @@ export const changelog: MajorRelease[] = [
       "The first release of Proud: the Dynamic Island on your Mac, with built-in AI agents, Focus Sessions, Quick Capture and Smart Notifications.",
     releases: [
       {
+        version: "1.0.2",
+        date: "16 Oct 2026",
+        features: [
+          "Added AirPods to the Dynamic Island, iPhone style: the earbuds and a battery ring when they connect",
+          "Added Mac battery alerts at 20% and 10%, and a green charging bolt with the percentage when you plug in",
+          "Added volume and brightness bars to the island",
+          "Added the orange and green dots when an app is using the microphone or the camera",
+          "Added an alert when macOS Focus turns on or off",
+          "Added a Tools tab to the island: screen recording, voice memos, song recognition and iFood order tracking",
+          "Added the app version, a sign-out confirmation and account deletion to Settings › Profile",
+        ],
+      },
+      {
         version: "1.0.1",
         date: "16 Oct 2026",
         features: [

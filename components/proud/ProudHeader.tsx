@@ -42,7 +42,7 @@ export default function ProudHeader({ hide, trial }: { hide?: "changelog" | "dow
               Proud
             </span>
             <span className="-mt-5 rounded-md border border-[#b3b3be] px-1.5 text-[13px] font-semibold leading-[18px] text-[#5c5c66]">
-              v1.0.1
+              v1.0.2
             </span>
           </a>
           <span className="hidden -translate-y-1 items-center gap-2 text-[13px] font-medium text-[#83838f] md:flex">
