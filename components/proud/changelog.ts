@@ -26,7 +26,7 @@ export const changelog: MajorRelease[] = [
         date: "16 Oct 2026",
         features: [
           "Added 20 working connections: Google Calendar, Gmail, Google Drive, Notion, Obsidian, Todoist, Linear, Slack, Microsoft Teams, Discord, WhatsApp, Telegram, Figma, Nubank, Vercel, Cloudflare, Supabase, GitHub, Claude and ChatGPT",
-          "Added a new macOS-style update window with the Proud icon, the version and Update / Later buttons",
+          "Added the native macOS update alert, with the Proud icon, the version and Update / Later buttons",
           "Added new-version alerts to the Notifications tab in the Dynamic Island, with the Proud logo — click to update",
           "Added the version and build number to the bottom-left corner of the login screen",
         ],
