@@ -4,11 +4,12 @@ import DownloadMacLabel from "./DownloadMacLabel";
 import TrialBanner from "./TrialBanner";
 
 // A page can hide the header link that points to itself; that link animates away on load.
-export default function ProudHeader({ hide }: { hide?: "changelog" | "download" }) {
+// `trial` shows the free trial banner above the header.
+export default function ProudHeader({ hide, trial }: { hide?: "changelog" | "download"; trial?: boolean }) {
   return (
     // The trial banner sticks to the top together with the header.
     <div className="sticky top-0 z-50">
-      <TrialBanner />
+      {trial && <TrialBanner />}
       <header data-reveal="0" className="flex w-full items-center justify-between bg-[#f4f4f6]/85 px-5 py-4 backdrop-blur-xl md:px-20 md:py-5">
         <div className="flex items-center gap-8">
           <a href="/" className="group flex items-center gap-3">
