@@ -42,7 +42,7 @@ export default function DownloadPage() {
           <img src="/proud-disk.png" alt="" width={99} height={128} className="h-32 w-auto drop-shadow-[0_8px_10px_rgba(28,28,30,0.3)]" />
           <h2 translate="no" className="notranslate mt-8 text-[22px] font-bold tracking-[-0.02em] text-[#1c1c1e]">Proud</h2>
           <p className="mt-1 text-[17px] font-semibold text-[#83838f]">Minimum macOS 15 Sequoia</p>
-          <p className="mt-1 text-[15px] font-medium text-[#a3a3ad]">ZIP, 5.6 MB · v1.0.1 (build 202610161016)</p>
+          <p className="mt-1 text-[15px] font-medium text-[#a3a3ad]">ZIP, 5.6 MB · v1.0.1 (build 202610161019)</p>
           <a
             href="https://github.com/miguelrcha/proud/releases/latest/download/Proud.zip"
             className="group mt-6 flex items-center rounded-[12px] bg-[#1c1c1e] px-5 py-3 text-[18px] font-semibold text-white shadow-[0_14px_30px_-8px_rgba(28,28,30,0.45)] transition-transform hover:-translate-y-0.5"
